@@ -16,6 +16,9 @@ His blog is at http://www.catonmat.net  --  good coders code, great reuse.
 Table of contents:
     [01] Chapter  1: Building Blocks
          01-building-blocks.ml
+    [02] Chapter  2: Matchmaker, Matchmaker
+         02-matchmaker.ml
+
     ...
     work in progress, adding new chapters every once in a while
 
@@ -64,6 +67,60 @@ Finally the chapter presents the first moral:
 | shapes.                                                                    |
 |                                                                            |
 '----------------------------------------------------------------------------'
+
+
+[02]-Chapter-2-Matchmaker-----------------------------------------------------
+
+See 02-matchmaker.ml file for code examples.
+
+Chapter 2 introduces functions, pattern matching on function arguments and
+recursion. It takes you very carefully through several examples so you
+understood the topic precisely.
+
+For example, given this datatype,
+
+    datatype 'a shish =
+            Bottom of 'a
+        |   Onion of 'a shish
+        |   Lamb of 'a shish
+        |   Tomato of 'a shish;
+
+then the following function determines the type of Bottom,
+
+    fun what_bottom(Bottom(x))
+        = x
+     |  what_bottom(Onion(x))
+        = what_bottom(x)
+     |  what_bottom(Lamb(x))
+        = what_bottom(x)
+     |  what_bottom(Tomato(x))
+        = what_bottom(x);
+
+The data type of this function is 'a shish -> 'a, that is, it takes a
+parametrizable type 'a shish and returns the parametrization 'a.
+
+Here is an example of applying this function.
+
+    what_bottom(Onion(Lamb(Tomato(Bottom(55)))));
+
+It produces value 55 because it matches the Onion(x) rule, where x is
+Lamb(Tomato(Bottom(55))), and recurses with the argument x on itself. Next
+it matches Lamb(x), with x being Tomato(Bottom(55)) and recurses. Then it
+matches Tomato(Bottom(x)), setting x to Bottom(55) and recurses. Finally the
+first rule Bottom(x) matches, with x being 55. This rule is the result of the
+function, therefore the result is 55.
+
+The chapter ends with the second moral:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The second moral:                                                          |
+|                                                                            |
+| The number and order of the patterns in the definition of a function shold |
+| match that of the definition of the consumed datatype.                     |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
 
 ------------------------------------------------------------------------------
 
