@@ -22,6 +22,8 @@ Table of contents:
          03-cons-magnificent.ml
     [04] Chapter  4: Look to the Stars
          04-stars.ml
+    [05] Chapter  5: Couples Are Magnificent, Too
+         05-couples.ml
 
     ...
     work in progress, adding new chapters every once in a while
@@ -252,6 +254,64 @@ The fourth moral follows:
 | type.                                                                      |
 |                                                                            |
 '----------------------------------------------------------------------------'
+
+[05]-Chapter-5-Couples-Are-Magnificent-Too------------------------------------
+
+See 05-couples.ml file for code examples.
+
+Chapter 5 shows how to create data types with stars. Here is an example,
+
+    datatype 'a pizza =
+            Bottom
+        |   Topping of ('a * ('a pizza));
+
+The members of this 'a pizza are all possible parametrizations of 'a pizza.
+For example, int pizza, bool pizza, dessert pizza, etc. More concrete
+example is Topping(true, Topping(true, Bottom)), which is of type bool pizza.
+
+Then the chapter shows how to work on datatypes like these, and how to do
+efficient pattern matching, and how to shorten the written functions by
+thinking how the patterns matched.
+
+For example, this long function,
+
+    fun rem_fish(x, Bottom)
+        = Bottom
+     |  rem_fish(Anchovy, Topping(Anchovy, p))
+        = rem_fish(Anchovy, p)
+     |  rem_fish(Anchovy, Topping(t, p))
+        = Topping(t, rem_fish(Anchovy, p))
+     |  rem_fish(Lox, Topping(Lox, p))
+        = rem_fish(Lox, p)
+     |  rem_fish(Lox, Topping(t, p))
+        = Topping(t, rem_fish(Lox, p))
+     |  rem_fish(Tuna, Topping(Tuna, p))
+        = rem_fish(Tuna, p)
+     |  rem_fish(Tuna, Topping(t, p))
+        = Topping(t, rem_fish(Tuna,p));
+
+Can be rewritten as:
+
+    fun rem_fish2(x, Bottom)
+        = Bottom
+     |  rem_fish2(x, Topping(t, p))
+        = if eq_fish(x, t)
+            then rem_fish2(x, p)
+            else Topping(t,rem_fish2(x,p));
+
+With the help of helper function eq_fish.
+
+The fifth moral follows:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The fifth moral:                                                           |
+|                                                                            |
+| Write the first draft of a function following all the morals. When it is   |
+| correct and no sooner, simplify.                                           |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
 
 ------------------------------------------------------------------------------
 
