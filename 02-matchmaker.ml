@@ -155,7 +155,7 @@ what_bottom(Bottom(Sword));                     (* Sword *)
 
 
 (*
-** Go get yourself this wonderful book and have fun with logic programming!
+** Go get yourself this wonderful book and have fun with the ML language!
 **
 ** Shortened URL to the book at Amazon.com: http://bit.ly/aNenRl
 **
