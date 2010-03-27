@@ -18,6 +18,10 @@ Table of contents:
          01-building-blocks.ml
     [02] Chapter  2: Matchmaker, Matchmaker
          02-matchmaker.ml
+    [03] Chapter  3: Cons Is Still Magnificent
+         03-cons-magnificent.ml
+    [04] Chapter  4: Look to the Stars
+         04-stars.ml
 
     ...
     work in progress, adding new chapters every once in a while
@@ -121,6 +125,76 @@ The chapter ends with the second moral:
 |                                                                            |
 '----------------------------------------------------------------------------'
 
+[03]-Chapter-3-Cons-Is-Still-Magnificent--------------------------------------
+
+See 03-cons-magnificent.ml file for code examples.
+
+Chapter 3 continues the adventure of manipulating datatypes. The examples in
+this chapter show how to remove a level of datatype, how to add a level of
+datatype and how to modify a level. The mindset you develop with these
+examples is the same as in Lisp, where you manipulate lists by taking car and
+cdr, dropping car, replacing car and consing the result together. That's why
+the title involves the word "cons".
+
+The first example in this chapter shows how to remove a level of nested type
+and how to add a level of datatype (don't know how to express myself correctly
+on what the example does.)
+
+Here is an example, suppose you have this datatype,
+
+    datatype pizza =
+            Crust
+        |   Cheese of pizza
+        |   Onion of pizza
+        |   Anchovy of pizza
+        |   Sausage of pizza;
+
+And you have constructed an item of this type,
+
+    Anchovy(
+      Onion(
+        Anchovy(
+          Anchovy(
+            Cheese(
+              Crust)))));
+
+And you wish to remove all occurances of Anchovy from the type. Then the
+following function does it,
+
+    fun remove_anchovy(Crust)
+        = Crust
+     |  remove_anchovy(Cheese(x))
+        = Cheese(remove_anchovy(x))
+     |  remove_anchovy(Onion(x))
+        = Onion(remove_anchovy(x))
+     |  remove_anchovy(Anchovy(x))
+        = remove_anchovy(x)
+     |  remove_anchovy(Sausage(x))
+        = Sausage(remove_anchovy(x));
+
+The base case here is Crust, and then it uses pattern matching on types
+Cheese(x), Onion(x), Anchovy(x), Sausage(x). If the type is Anchovy(x), then
+the Anchovy is removed by recusing on matched pattern x and dropping Anchovy.
+
+Similarly, functions to add a layer and replace a layer are written.
+
+At the end of the chapter, as usual, the third moral is presented.
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The third moral:                                                           |
+|                                                                            |
+| Functions that produce values of a datatype must use the associated        |
+| constructors to build data of that type.                                   |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
+
+[04]-Chapter-4-Look-to-the-Stars----------------------------------------------
+
+See 04-stars.ml file for code examples.
+
+... coming soon ...
 
 ------------------------------------------------------------------------------
 
