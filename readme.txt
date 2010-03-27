@@ -194,7 +194,64 @@ At the end of the chapter, as usual, the third moral is presented.
 
 See 04-stars.ml file for code examples.
 
-... coming soon ...
+Chapter 4 introduces stars and functions on stars. Stars combine datatypes.
+For example, consider these two datatypes,
+
+    datatype meza = 
+            Shrimp
+        |   Calamari
+        |   Escargots
+        |   Hummus;
+
+    datatype main =
+            Steak
+        |   Ravioli
+        |   Chicken
+        |   Eggplant;
+
+If we write that something is of type (meza*main), then we mean all items
+from the set of all possible combinations of meza and main:
+
+    (Shrimp,Steak)
+    (Shrimp,Ravioli)
+    (Shrimp,Chicken)
+    (Shrimp,Eggplant)
+    (Calamari,Steak)
+    (Calamari,Ravioli)
+    (Calamari,Chicken)
+    (Calamari,Eggplant)
+    (Escargots,Steak)
+    (Escargots,Ravioli)
+    (Escargots,Chicken)
+    (Escargots,Eggplant)
+    (Hummus,Steak)
+    (Hummus,Ravioli)
+    (Hummus,Chicken)
+    (Hummus,Eggplant)
+
+We can then introduce functions that consume (and produce) stars. For example,
+
+    fun has_steak(a:meza,Steak,d:dessert):bool
+        = true
+     |  has_steak(a:meza,ns,d:dessert):bool
+        = false;
+
+The has_steak function takes a (meza*main*dessert) and produces a bool,
+depending on main. If main is Steak, then it's true, otherwise it's false.
+
+The chapter also shows how to do pattern matching more effectively and how to
+force types for function arguments (like in the example above).
+
+The fourth moral follows:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The fourth moral:                                                          |
+|                                                                            |
+| Some functions consume values of star type; some produce values of star    |
+| type.                                                                      |
+|                                                                            |
+'----------------------------------------------------------------------------'
 
 ------------------------------------------------------------------------------
 
