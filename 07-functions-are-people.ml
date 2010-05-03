@@ -165,7 +165,7 @@ fun fibs(n)(m)
 (* What is going on here?
 *)
 fibs;                               (* int -> int -> chain *)
-fibs(1);                            (* int -> chain, with m = 1 *)
+fibs(1);                            (* int -> chain, with n = 1 *)
 fibs(5)(1);                         (* Link(6, fibs(1)) *)
 
 (* Currying!
