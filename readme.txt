@@ -28,6 +28,8 @@ Table of contents:
          06-full-of-stars.ml
     [07] Chapter  7: Functions Are People, Too
          07-functions-are-people.ml
+    [08] Chapter  8: Bows and Arrows
+         08-bows-and-arrows.ml
     ...
     work in progress, adding new chapters every once in a while
 
@@ -386,7 +388,7 @@ datatype:
 Now ints(0) is Link(1, ints), ints(1) is Link(2, ints), ... .
 
 The chapter continues exploring this self-referential datatype and ends with
-the sevent moral.
+currying and the sevent moral.
 
 .----------------------------------------------------------------------------.
 |                                                                            |
@@ -394,6 +396,38 @@ the sevent moral.
 |                                                                            |
 | Some functions consume values of arrow type; some produce values of arrow  |
 | type.                                                                      |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
+
+[08]-Chapter-8-Bows-and-Arrows------------------------------------------------
+
+See 08-bows-and-arrows.ml file for code examples.
+
+Chapter 8 is all about how to do currying. 
+
+For example, this function,
+
+    fun in_range_c(small,large)(x)
+        = x>small andalso x<large;
+
+Produces a function that can be called in two stages, first, calling it as
+in_range_c(10,20) returns a function that would check if the next argument is
+between 10 and 20. Here is an example,
+
+    fun in_range_c_10_20 =
+        in_range_c(10,20);
+
+    in_range_c_10_20(15);   (* true *)
+
+From all this currying the eight moral emerges:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The eighth moral:                                                          |
+|                                                                            |
+| Replace stars by arrows to reduce the number of values consumed and to in- |
+| crease the generality of the function defined.                             |
 |                                                                            |
 '----------------------------------------------------------------------------'
 
