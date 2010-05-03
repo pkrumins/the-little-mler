@@ -26,6 +26,8 @@ Table of contents:
          05-couples.ml
     [06] Chapter  6: Oh My, It's Full of Stars
          06-full-of-stars.ml
+    [07] Chapter  7: Functions Are People, Too
+         07-functions-are-people.ml
     ...
     work in progress, adding new chapters every once in a while
 
@@ -315,7 +317,7 @@ The fifth moral follows:
 '----------------------------------------------------------------------------'
 
 
-[05]-Chapter-6-Oh-My-Its-Full-of-Stars----------------------------------------
+[06]-Chapter-6-Oh-My-Its-Full-of-Stars----------------------------------------
 
 See 06-full-of-stars.ml file for code examples.
 
@@ -349,6 +351,49 @@ The sixth moral is stated:
 |                                                                            |
 | As datatype definitions get more compicated, so do the functions over      |
 | them.                                                                      |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
+
+[07]-Chapter-7-Functions-Are-People-Too---------------------------------------
+
+See 07-functions-are-people.ml file for code examples.
+
+Chapter 7 focuses on functions, how they can be consumed by other functions as
+values, and how they can be returned from functions as values. It also shows
+how datatype constructors are also functions.
+
+Here is an example, given this datatype,
+
+    datatype bool_or_int =
+        Hot  of bool
+     |  Cold of int;
+
+Guess what is Hot? It's a function bool -> bool_or_int!
+
+Here is a problem that makes your hat not fit on your head anymore.
+What is this:
+
+    datatype chain =
+        Link of (int * (int -> chain));
+
+It's a self-referential datatype. Here is a function that is a member of this
+datatype:
+
+    fun ints(n)
+        = Link(n+1, ints);
+
+Now ints(0) is Link(1, ints), ints(1) is Link(2, ints), ... .
+
+The chapter continues exploring this self-referential datatype and ends with
+the sevent moral.
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The seventh moral:                                                         |
+|                                                                            |
+| Some functions consume values of arrow type; some produce values of arrow  |
+| type.                                                                      |
 |                                                                            |
 '----------------------------------------------------------------------------'
 
