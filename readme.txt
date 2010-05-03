@@ -24,7 +24,8 @@ Table of contents:
          04-stars.ml
     [05] Chapter  5: Couples Are Magnificent, Too
          05-couples.ml
-
+    [06] Chapter  6: Oh My, It's Full of Stars
+         06-full-of-stars.ml
     ...
     work in progress, adding new chapters every once in a while
 
@@ -255,6 +256,7 @@ The fourth moral follows:
 |                                                                            |
 '----------------------------------------------------------------------------'
 
+
 [05]-Chapter-5-Couples-Are-Magnificent-Too------------------------------------
 
 See 05-couples.ml file for code examples.
@@ -309,6 +311,44 @@ The fifth moral follows:
 |                                                                            |
 | Write the first draft of a function following all the morals. When it is   |
 | correct and no sooner, simplify.                                           |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
+
+[05]-Chapter-6-Oh-My-Its-Full-of-Stars----------------------------------------
+
+See 06-full-of-stars.ml file for code examples.
+
+Chapter 6 shows how to build fruit trees and how to define mutually recursive
+datatypes and functions.
+
+For example, here is a mutually recursive datatype,
+
+    datatype 
+        'a slist =
+                Empty
+            |   Scons of (('a sexp)*('a slist))
+    and
+        'a sexp =
+                An_atom of 'a
+            |   A_slist of ('a slist);
+
+An example member of it is,
+
+    Scons(An_atom(5),
+      Scons(An_atom(13),
+        Scons(An_atom(1), Empty)));
+
+And it has the datatype of 'int slist' because the shape 'a is 'int'.
+
+The sixth moral is stated:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The sixth moral:                                                           |
+|                                                                            |
+| As datatype definitions get more compicated, so do the functions over      |
+| them.                                                                      |
 |                                                                            |
 '----------------------------------------------------------------------------'
 
