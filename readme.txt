@@ -30,6 +30,8 @@ Table of contents:
          07-functions-are-people.ml
     [08] Chapter  8: Bows and Arrows
          08-bows-and-arrows.ml
+    [09] Chapter  9: Oh No!
+         09-oh-no.ml
     ...
     work in progress, adding new chapters every once in a while
 
@@ -428,6 +430,70 @@ From all this currying the eight moral emerges:
 |                                                                            |
 | Replace stars by arrows to reduce the number of values consumed and to in- |
 | crease the generality of the function defined.                             |
+|                                                                            |
+'----------------------------------------------------------------------------'
+
+
+[09]-Chapter-9-Oh-No----------------------------------------------------------
+
+See 09-oh-no.ml file for code examples.
+
+Chapter 9 teaches exceptions and how to handle them. Here is an example,
+suppose you have a list of bacons and indexes,
+
+    datatype 'a list =
+        Empty
+     |  Cons of 'a * 'a list;
+
+    datatype box =
+        Bacon
+     |  Ix of int;
+
+And you want to find the position where bacon appears. So you write a fun-
+ction where_is,
+
+    fun where_is(Empty)
+        = 0
+     |  where_is(Cons(a_box, rest))
+        = if a_box=Bacon
+            then 1
+            else 1 + where_is(rest);
+
+But it doesn't quite work, because if there is no bacon in the list, it
+returns the length of the list. We can solve that by introducting an exception
+and raising it when no bacon was found,
+
+    exception No_bacon of int;
+
+    fun where_is(Empty)
+        = raise No_bacon(0)
+     |  where_is(Cons(a_box, rest))
+        = if is_bacon(a_box)
+            then 1
+            else 1 + where_is(rest);
+
+When where_is gets called, we have to handle this exception, so we write
+
+    (where_is(
+      Cons(Ix(5),
+        Cons(Ix(13),
+          Cons(Ix(8),
+            Empty))))
+      handle
+        No_bacon(an_int)
+        => an_int);
+
+Which will return 0 when no bacon was found.
+
+The other half of the chapter is spent playing Find the Bacon game, at the
+end the ninth moral is stated:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The ninth moral:                                                           |
+|                                                                            |
+| Some functions produce exceptions instead of values; some don't produce    |
+| anything. Handle raised exceptions carefully.                              |
 |                                                                            |
 '----------------------------------------------------------------------------'
 
