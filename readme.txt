@@ -32,8 +32,8 @@ Table of contents:
          08-bows-and-arrows.ml
     [09] Chapter  9: Oh No!
          09-oh-no.ml
-    ...
-    work in progress, adding new chapters every once in a while
+    [10] Chapter 10: Building On Blocks
+         10-building-on-blocks.ml
 
 
 [01]-Chapter-1-Building-Blocks------------------------------------------------
@@ -353,7 +353,7 @@ The sixth moral is stated:
 |                                                                            |
 | The sixth moral:                                                           |
 |                                                                            |
-| As datatype definitions get more compicated, so do the functions over      |
+| As datatype definitions get more complicated, so do the functions over     |
 | them.                                                                      |
 |                                                                            |
 '----------------------------------------------------------------------------'
@@ -390,7 +390,7 @@ datatype:
 Now ints(0) is Link(1, ints), ints(1) is Link(2, ints), ... .
 
 The chapter continues exploring this self-referential datatype and ends with
-currying and the sevent moral.
+currying and the seventh moral.
 
 .----------------------------------------------------------------------------.
 |                                                                            |
@@ -460,7 +460,7 @@ ction where_is,
             else 1 + where_is(rest);
 
 But it doesn't quite work, because if there is no bacon in the list, it
-returns the length of the list. We can solve that by introducting an exception
+returns the length of the list. We can solve that by introducing an exception
 and raising it when no bacon was found,
 
     exception No_bacon of int;
@@ -497,6 +497,103 @@ end the ninth moral is stated:
 |                                                                            |
 '----------------------------------------------------------------------------'
 
+
+[10]-Chapter-10-Building-On-Blocks--------------------------------------------
+
+See 10-building-on-blocks.ml file for code examples.
+
+Chapter 10 is the most complicated chapter in the book, it talks about
+signatures, functors and structures.
+
+If you're coming from OO world, then think of signatures as interfaces,
+functors as implementations and structures as the result of constructing a
+functor.
+
+The chapter introduces these concepts via Peano numbers. Suppose you want to
+do arithmetic using several number systems. They all share common properties,
+such as succ, for succeeding number, pred for preceding number and is_zero
+that tests if the number is zero.
+
+Given these properties, you may define a signature for a number system,
+
+    signature N =
+        sig
+            type number
+            exception Too_small
+            val succ    : number -> number
+            val pred    : number -> number
+            val is_zero : number -> bool
+        end;
+
+The signature says that for a number system to be of good use it has to
+implement functions succ, pred, is_zero that act on type number and may throw
+an exception Too_small.
+
+Now here is an implementation (functor) of a number system using lists,
+
+    functor NumberAsNum()
+        :>
+        N
+        =
+        struct
+            datatype num =
+                Zero
+             |  One_more_than of num
+            type number = num
+            exception Too_small
+            fun succ(n) =
+                One_more_than(n)
+            fun pred(Zero)
+                = raise Too_small
+             |  pred(One_more_than(n))
+                = n
+            fun is_zero(Zero)
+                = true
+             |  is_zero(foo)
+                = false;
+        end;
+
+And here is an implementation of a number system using integers:
+
+    functor NumberAsInt()
+        :>
+        N
+        =
+        struct
+            type number = int
+            exception Too_small
+            fun succ(n) = n + 1
+            fun pred(n)
+                = if n=0
+                    then raise Too_small
+                    else n-1
+            fun is_zero(n)
+                = n=0
+        end;
+
+Now we can use functors to construct structures. Here is a structure that
+uses ints as numbers,
+
+    structure IntStruct = NumberAsInt();
+
+And here is one that uses lists as numbers,
+
+    structure NumStruct = NumberAsNum();
+
+But you can't quite use them because the implementation uses number datatype
+internally and you don't have access to this datatype.
+
+The book continues to solving this problem and shows two ways how to solve
+this type mismatch problem. It ends with the last, tenth moral:
+
+.----------------------------------------------------------------------------.
+|                                                                            |
+| The tenth moral:                                                           |
+|                                                                            |
+| Real programs consist of many components. Specify the dependencies among   |
+| these components using signatures and functors.                            |
+|                                                                            |
+'----------------------------------------------------------------------------'
 
 ------------------------------------------------------------------------------
 
